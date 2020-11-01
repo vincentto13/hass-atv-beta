@@ -341,13 +341,12 @@ class AppleTVManager:
 
         await self._setup_device_registry()
         
-        if self._is_pwr_mgmt_on:
-            self.power_listener = PowerListener(self)
-            self.atv.power.listener = self.power_listener
-            if self.atv.power.power_state in [PowerState.On, PowerState.Unknown]:
-                self._update_state(connected=True)
-            else:
-                self._update_state(disconnected=True)
+        self.power_listener = PowerListener(self)
+        self.atv.power.listener = self.power_listener
+        if self.atv.power.power_state in [PowerState.On, PowerState.Unknown]:
+            self._update_state(connected=True)
+        else:
+            self._update_state(disconnected=True)
 
         self._connection_attempts = 0
         if self._connection_was_lost:
